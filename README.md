@@ -2,6 +2,9 @@
 
 The `envflagparser` package provides functionality to parse configuration values from both environment variables and command-line flags into a provided struct. It offers the flexibility to prioritize environment variables over flag values.
 
+```sh
+go get github.com/erikborsos/envflagparser
+```
 ## Features
 
 - Parse configuration values from flags and environment variables into a provided struct.
@@ -15,7 +18,7 @@ The `envflagparser` package provides functionality to parse configuration values
 ```go
 type Config struct {
     Host       string        `env:"HOST" flag:"host;localhost;Host address"`
-    Port       string        `env:"PORT" flag:"port;localhost;Port"`
+    Port       int           `env:"PORT" flag:"port;8080;Port"`
     Timeout    time.Duration `env:"TIMEOUT" flag:"timeout;20s;Connection timeout"`
 }
 ```
@@ -46,7 +49,7 @@ import (
     "fmt"
     "time"
 
-    "envflagparser"
+    "github.com/erikborsos/envflagparser"
 )
 
 type Config struct {
