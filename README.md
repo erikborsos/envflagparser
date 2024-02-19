@@ -54,7 +54,7 @@ import (
 
 type Config struct {
     Host       string        `env:"HOST" flag:"host;localhost;Host address"`
-    Port       string        `env:"PORT" flag:"port;localhost;Port"`
+    Port       int           `env:"PORT" flag:"port;8080;Port"`
     Timeout    time.Duration `env:"TIMEOUT" flag:"timeout;10s;Connection timeout"`
 }
 
@@ -67,7 +67,7 @@ func main() {
     }
 
     fmt.Printf("Host: %s\n", config.Host)
-    fmt.Printf("Port: %s\n", config.Port)
+    fmt.Printf("Port: %d\n", config.Port)
     fmt.Printf("Timeout: %s\n", config.Timeout)
 }
 ```
