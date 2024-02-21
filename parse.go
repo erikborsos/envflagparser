@@ -12,7 +12,6 @@ import (
 	"os"
 	"reflect"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -62,12 +61,19 @@ func ParseConfig(configStruct interface{}) (err error) {
 		}
 
 		// Get flag value based on field type.
-		flagSetValue, err := getFlagSetValue(field, flagName, defaultValue, usage)
-		if err != nil {
-			return err
-		}
+		if flagName != "" {
+			flagSetValue, err := getFlagSetValue(field, flagName, defaultValue, usage)
+			if err != nil {
+				return err
+			}
 
-		flagValues[flagName] = flagSetValue
+			flagValues[flagName] = flagSetValue
+
+			println(len(flagValues))
+			println(flagName)
+		} else if !envExists && defaultValue != "" {
+			setValue(field, defaultValue)
+		}
 	}
 
 	// Parse command-line flags.
@@ -95,7 +101,7 @@ func ParseConfig(configStruct interface{}) (err error) {
 func getFieldIndexByFlagName(typ reflect.Type, flagName string) int {
 	for i := 0; i < typ.NumField(); i++ {
 		fieldType := typ.Field(i)
-		if fieldType.Tag.Get("flag") != "" && strings.Split(fieldType.Tag.Get("flag"), ";")[0] == flagName {
+		if fieldType.Tag.Get("flag") != "" && fieldType.Tag.Get("flag") == flagName {
 			return i
 		}
 	}
