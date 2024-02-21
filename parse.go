@@ -51,8 +51,9 @@ func ParseConfig(configStruct interface{}) (err error) {
 
 		// Get flag and environment variable names, default value, and usage information.
 		envKey := fieldType.Tag.Get("env")
-		flagArgs := fieldType.Tag.Get("flag")
-		flagName, defaultValue, usage := parseFlagArgs(flagArgs, envKey)
+		flagName := fieldType.Tag.Get("flag")
+		defaultValue := fieldType.Tag.Get("default")
+		usage := fieldType.Tag.Get("usage")
 
 		// Check if environment variable exists and set the field accordingly.
 		envValue, envExists := os.LookupEnv(envKey)
@@ -88,12 +89,6 @@ func ParseConfig(configStruct interface{}) (err error) {
 	}
 
 	return nil
-}
-
-// parseFlagArgs splits flag arguments into name, defaultValue and usage strings
-func parseFlagArgs(flagArgs string, envKey string) (name, defaultValue, usage string) {
-	parts := strings.Split(flagArgs, ";")
-	return parts[0], parts[1], parts[2]
 }
 
 // getFieldIndexByFlagName retrieves the index of a field by its flag name.

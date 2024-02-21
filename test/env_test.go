@@ -9,9 +9,9 @@ import (
 )
 
 type Config struct {
-	Host       string        `env:"HOST" flag:"host;localhost;Host address"`
-	Timeout    time.Duration `env:"TIMEOUT" flag:"timeout;10s;Connection timeout"`
-	EnableLogs bool          `env:"ENABLE_LOGS" flag:"enable-logs;false;Enable logging"`
+	Host       string        `env:"HOST" flag:"host" default:"localhost"`
+	Timeout    time.Duration `env:"TIMEOUT" flag:"timeout" default:"10s"`
+	EnableLogs bool          `env:"ENABLE_LOGS" flag:"enable-logs" default:"false"`
 }
 
 func TestParseConfig(t *testing.T) {

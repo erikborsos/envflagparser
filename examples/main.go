@@ -9,10 +9,10 @@ import (
 )
 
 type MyConfig struct {
-	Port    int           `env:"PORT" flag:"port;8080;Server port"`
-	AppName string        `env:"NAME" flag:"name;MyApp;App name"`
-	Debug   bool          `env:"DEBUG" flag:"debug;false;Enable debug logs"`
-	Timeout time.Duration `env:"TIMEOUT" flag:"timeout;10s;Connection timeout"`
+	Port    int           `env:"PORT" flag:"port" default:"8080" usage:"Server port"`
+	AppName string        `env:"NAME" flag:"name" default:"MyApp" usage:"App name"`
+	Debug   bool          `env:"DEBUG" flag:"debug" default:"false" usage:"Enable debug logs"`
+	Timeout time.Duration `env:"TIMEOUT" flag:"timeout" default:"10s" usage:"Connection timeout"`
 }
 
 func main() {
