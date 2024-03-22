@@ -17,9 +17,10 @@ go get github.com/erikborsos/envflagparser
 
 ```go
 type Config struct {
-    Host       string        `env:"HOST" flag:"host;localhost;Host address"`
-    Port       int           `env:"PORT" flag:"port;8080;Port"`
-    Timeout    time.Duration `env:"TIMEOUT" flag:"timeout;20s;Connection timeout"`
+	Port    int           `env:"PORT" flag:"port" default:"8080" usage:"Server port"`
+	AppName string        `env:"NAME" flag:"name" default:"MyApp" usage:"App name"`
+	Debug   bool          `env:"DEBUG" flag:"debug" default:"false" usage:"Enable debug logs"`
+	Timeout time.Duration `env:"TIMEOUT" flag:"timeout" default:"10s" usage:"Connection timeout"`
 }
 ```
 
@@ -46,29 +47,31 @@ envflagparser.PrintErrorUsage = true // Include usage information in error messa
 package main
 
 import (
-    "fmt"
-    "time"
+	"fmt"
+	"os"
+	"time"
 
-    "github.com/erikborsos/envflagparser"
+	"github.com/erikborsos/envflagparser"
 )
 
 type Config struct {
-    Host       string        `env:"HOST" flag:"host;localhost;Host address"`
-    Port       int           `env:"PORT" flag:"port;8080;Port"`
-    Timeout    time.Duration `env:"TIMEOUT" flag:"timeout;10s;Connection timeout"`
+	Port    int           `env:"PORT" flag:"port" default:"8080" usage:"Server port"`
+	AppName string        `env:"NAME" flag:"name" default:"MyApp" usage:"App name"`
+	Debug   bool          `env:"DEBUG" flag:"debug" default:"false" usage:"Enable debug logs"`
+	Timeout time.Duration `env:"TIMEOUT" flag:"timeout" default:"10s" usage:"Connection timeout"`
 }
 
 func main() {
-    var config Config
-    err := envflagparser.ParseConfig(&config)
-    if err != nil {
-        fmt.Printf("Error parsing config: %v\n", err)
-        return
-    }
+	config := &Config{}
+	err := envflagparser.ParseConfig(config)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "error parsing config: %v\n", err)
+	}
 
-    fmt.Printf("Host: %s\n", config.Host)
-    fmt.Printf("Port: %d\n", config.Port)
-    fmt.Printf("Timeout: %s\n", config.Timeout)
+	fmt.Println("Port:", config.Port)
+	fmt.Println("AppName:", config.AppName)
+	fmt.Println("Debug:", config.Debug)
+	fmt.Println("Timeout:", config.Timeout)
 }
 ```
 
